@@ -20,6 +20,7 @@ from config import (
     DELTA, FERMI_LEVEL, G_EFFECT, ETA,
     E_RANGE, N_ENERGY, K_MESH, B_FIELDS_Z, B_FIELDS_X, BATCH_SIZE, OUTPUT_DIR,
     NORMALIZE_BACKGROUND, NORMALIZE_FRACTION,
+    HR_PATH,
 )
 from hr_io import read_hr_dat_full
 from kpoints import generate_mp_grid_weighted
@@ -102,10 +103,10 @@ def _run_bdg_dos_direction(kpoints, k_slices, n_slices, hr_data, r_vectors,
 
         results[B] = dos_full
 
-        dos_file = os.path.join(output_dir, f'NbSe2_DOS_{direction}_B{B:.1f}T.dat')
+        dos_file = os.path.join(output_dir, f'DOS_{direction}_B{B:.1f}T.dat')
         save_dos_dat(energy_full * 1000, {B: dos_full}, [B], direction,
                      dos_file, normalized=NORMALIZE_BACKGROUND)
-        plot_file = os.path.join(output_dir, f'NbSe2_DOS_{direction}_B{B:.1f}T.png')
+        plot_file = os.path.join(output_dir, f'DOS_{direction}_B{B:.1f}T.png')
         plot_dos_single(energy_full * 1000, dos_full, B, direction, plot_file,
                         normalized=NORMALIZE_BACKGROUND)
 
@@ -174,7 +175,7 @@ def run_bdg_dos_parallel(hr_path, k_mesh, B_list, direction, output_dir,
 
 def main(use_parallel=True, n_workers=None):
     """Main entry point."""
-    hr_path = '../NbSe2_hr.dat'
+    hr_path = HR_PATH
     output_dir = OUTPUT_DIR
     os.makedirs(output_dir, exist_ok=True)
 
@@ -209,10 +210,10 @@ def main(use_parallel=True, n_workers=None):
             os.path.join(output_dir, 'x'), n_workers=1)
 
     plot_dos(energy_z, results_z, B_FIELDS_Z, 'z',
-             os.path.join(output_dir, 'NbSe2_DOS_z_direction.png'),
+             os.path.join(output_dir, 'DOS_z_direction.png'),
              normalized=NORMALIZE_BACKGROUND)
     plot_dos(energy_x, results_x, B_FIELDS_X, 'x',
-             os.path.join(output_dir, 'NbSe2_DOS_x_direction.png'),
+             os.path.join(output_dir, 'DOS_x_direction.png'),
              normalized=NORMALIZE_BACKGROUND)
 
     print("\nDone!")

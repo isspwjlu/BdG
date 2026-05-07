@@ -109,7 +109,7 @@ Edit `config.py` to adjust calculation parameters:
 | `DELTA`       | 0.2 meV                   | Superconducting gap                          |
 | `FERMI_LEVEL` | −2.0697 eV               | Chemical potential μ (from DFT)             |
 | `G_FACTOR`    | 2.0                       | Electron spin g-factor                       |
-| `G_EFFECT`    | 1                       | In-plane Zeeman enhancement factor           |
+| `G_EFFECT`    | 1                         | In-plane Zeeman enhancement factor           |
 | `ETA`         | 0.05·Δ                  | Lorentzian broadening width                  |
 | `E_RANGE`     | 3·Δ                     | Energy half-range for DOS                    |
 | `N_ENERGY`    | 2000                      | Number of energy grid points (negative half) |

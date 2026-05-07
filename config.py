@@ -4,6 +4,13 @@ Units: eV (energy), Tesla (magnetic field), unless noted.
 """
 import numpy as np
 
+
+# Wannier90 hr.dat file path
+HR_PATH = "../NbSe2_hr.dat"
+
+# Output
+OUTPUT_DIR = "output"
+
 # Physical constants
 MU_B = 5.788e-5       # eV/T, Bohr magneton
 K_B = 8.617e-5        # eV/K, Boltzmann constant
@@ -51,5 +58,4 @@ NORMALIZE_FRACTION = 0.1   # fraction of positive-energy side used as reference
 # Performance
 BATCH_SIZE = 100000   # k-points per sub-batch in worker
 
-# Output
-OUTPUT_DIR = "output"
+

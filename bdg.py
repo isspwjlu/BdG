@@ -109,12 +109,14 @@ def build_BdG_matrix_full(Hk, delta_eV, B_vec, nwannier, mu,
     # Electron block
     A = Hk_sym + H_Z - mu * np.eye(nwannier, dtype=complex)
 
-    # Hole block
-    if H_minusk is not None:
-        Hmk_sym = (H_minusk + H_minusk.conj().T) / 2.0
-        hole_block = -np.conj(Hmk_sym + H_Z) + mu * np.eye(nwannier, dtype=complex)
-    else:
-        hole_block = -np.conj(A)
+    # Hole block — constructed via TRS to avoid numerical TRS violation
+    # from computing H(-k) separately (root cause of V-shaped DOS).
+    # T = -iσ_y·K, T H(k) T^{-1} = H(-k) = -iσ_y H(k)^* iσ_y
+    # -conj(H(-k)) = iσ_y H(k) iσ_y
+    # hole = -conj[H(-k) + H_Z] + μ = iσ_y H(k) iσ_y - conj(H_Z) + μ
+    i_sigma_y_full = np.kron(i_sigma_y, I_norb)
+    hole_Hk = i_sigma_y_full @ Hk_sym @ i_sigma_y_full
+    hole_block = hole_Hk - np.conj(H_Z) + mu * np.eye(nwannier, dtype=complex)
 
     dim = 2 * nwannier
     H_bdg = np.zeros((dim, dim), dtype=complex)

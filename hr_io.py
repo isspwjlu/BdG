@@ -1,12 +1,30 @@
-"""Read Wannier90 hr.dat file and construct H(R) sparse matrices."""
+"""Read Wannier90 hr.dat file and construct H(R) sparse matrices.
+
+Wannier90 v1.x and v3.x both use block spin-orbital ordering:
+    [up1, up2, ..., upN, down1, down2, ..., downN]
+i.e., all spin-up Wannier functions first, then all spin-down.
+
+The only difference is that v1.x (without SOC) may output separate
+_up_hr.dat / _dn_hr.dat files, while v3.x (with SOC, spinors=True)
+outputs a single combined _hr.dat file. The index ordering within
+the combined matrix is the same for both versions.
+"""
 
 import numpy as np
 from scipy import sparse
 
 
-def read_hr_dat_full(filepath):
+def read_hr_dat_full(filepath, version="v3"):
     """
     Read Wannier90 hr.dat file.
+
+    Both v1 and v3 versions use the same block spin ordering
+    (all up first, then all down), so the version parameter is
+    for documentation / future extension only.
+
+    Args:
+        filepath: path to hr.dat file
+        version: 'v1' or 'v3' (default). Currently treated identically.
 
     Returns:
         nwannier: number of Wannier functions
